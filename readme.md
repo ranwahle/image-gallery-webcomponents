@@ -4,6 +4,7 @@ This code demonstrates image gallery build without any framework, but solely on 
 
 ## Running the application
 ```bash
+$ npm install
 $ npm start
 ```  
 
