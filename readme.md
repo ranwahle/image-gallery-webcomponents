@@ -16,7 +16,7 @@ browse http://localhost:3000
   #### Server side 
    Express 
    
-  #### Client side
+  #### Client side (under ./public folder)
    1. Pure HTML, javascript & CSS 
    2. Fontawesome icons    
     
