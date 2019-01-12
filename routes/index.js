@@ -26,6 +26,20 @@ router.get('/image-gallery/:fileName', (req, res) => {
 
 } )
 
+router.delete('/delete-image/:index', (req, res) => {
+    const index = +req.params.index;
+    if (isNaN(index)) {
+        res.status(400).send('Illigle index');
+    }
+    imageReader.deleteImage(index).then(() => {
+        res.status(200).send('OK');
+    }, () => res.status(400).send(`Of course this is the client's fault`))
+})
+
+router.get('/fontawesome/all.css', (req, res) => {
+    res.status(200).sendFile(`${__dirname}/node_modules/@fortawesome/fontawesome-free/css/all.css`.replace('routes/',''))
+})
+
 router.post('/add-image', (req, res) => {
     const form = new multiparty.Form();
     form.parse(req, (err, fields, files) => {
@@ -34,7 +48,7 @@ router.post('/add-image', (req, res) => {
         base64Img.img(fields.content[0], 'assets', fields.fileName[0], (err, filePath) => {
             if (!err) {
                 imageReader.addimage({fileName:  path.basename(filePath), title: fields['image-title'][0] , content: fields.content[0], contentType: fields['content-type'][0]
-                    , lastModified: fields['last-modified'][0]})
+                    , lastModified: fields['last-modified'][0], description: fields['image-description'][0]})
             }
         })
 
@@ -43,11 +57,17 @@ router.post('/add-image', (req, res) => {
         })
 
     })
-    const body = req.body;
-    console.log(body);
+
 
 
 
 } )
+
+router.put('/update-image', (req, res) => {
+     const {title, index} = req.body;
+     imageReader.updateImageTitle(title, index)
+         .then(() => res.status(200).send('OK') );
+
+})
 
 module.exports = router;

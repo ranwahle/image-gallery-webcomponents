@@ -1,3 +1,5 @@
+const imageClick = new CustomEvent('image-click')
+
 export default class SmallImage extends HTMLDivElement {
 
 
@@ -10,26 +12,48 @@ export default class SmallImage extends HTMLDivElement {
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
-        if (name === 'image=content') {
-            this.imagecontent = newValue || '';
+        if (name === 'image-content') {
+            if (this.imageElement) {
+                this.imageElement.setAttribute('src', newValue || '');
+            }
         }
-        if (name === 'file-name') {
 
-            this.imageElement.src = newValue;
+        if (name === 'image-title') {
+            if (this.titleElement) {
+                this.titleElement.textContent = newValue;
+            }
         }
     }
 
+    get imageContent() {
+        return this.getAttribute('image-content')
+    }
+
+    get imageTitle() {
+        return this.getAttribute('image-title');
+    }
+
+
+    get titleElement() {
+        return this.querySelector('div.small-image-container div');
+    }
 
 
     get imageElement() {
-        return  this.querySelector('img') || {};
+        return this.querySelector('img');
     }
 
 
     render() {
-        this.innerHTML = `<div  class="small-image-container"> <img  src="${this.attributes['image-content'].value ||  this.attributes['file-name'].value}">
-              <div>${this.attributes['image-title'].value}</div>
-</div>`;
+        this.innerHTML = `<div  class="small-image-container"><img>
+    <div></div> 
+    </div>`;
+
+        this.imageElement.src = this.imageContent;
+        this.titleElement.innerText = this.imageTitle;
+
+
+        this.onclick = () => this.dispatchEvent(imageClick)
     }
 
 }

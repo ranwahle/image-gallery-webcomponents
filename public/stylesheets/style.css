@@ -7,6 +7,10 @@ a {
   color: #00B7FF;
 }
 
+div.gallery-container {
+  display: flex;
+}
+
 .images-container {
   display: flex;
   flex-wrap: wrap;
@@ -17,10 +21,22 @@ a {
   width: 15em;
   height: 15em;
   display:block;
+  border: lightgray solid 1px;
 }
 .small-image-container img {
-  width: 10em;
-  height: 10em;
+  max-width: 15em;
+  max-height: 15em;
+  width: auto;
+  height: auto;
+  cursor: pointer;
+}
+
+.side-show {
+  width: 50%;
+}
+
+i {
+  font-size: 24px;
 }
 
 .disabled {
@@ -28,15 +44,20 @@ a {
   transition: color 1s linear;
 }
 
+.rename-section input {
+  font-size: 24px;
+}
+
 .hidden {
   visibility: hidden;
   height: 0px;
+  width: 0px;
   transition: height 500ms linear;
 }
 
 button {
-  color: white;
-  background-color: blue;
+
+  background-color: transparent;
   font-weight: bold;
   border-radius: 5px;
 }

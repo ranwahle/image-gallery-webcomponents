@@ -9,8 +9,9 @@ export default class AddImage extends HTMLDivElement {
     }
 
     setEvents() {
-        this.querySelector('form').addEventListener('submit', () => this.submitImage())
+        this.querySelector('form').onsubmit = () => this.submitImage();
         this.querySelector('[name="upload-image"]').addEventListener('change', (evt) => this.readImage(evt))
+        this.cancelButton.onclick = () => this.dispatchEvent(new CustomEvent( 'add-image-cancel'));
     }
 
     readFile() {
@@ -28,6 +29,13 @@ export default class AddImage extends HTMLDivElement {
     readImage(evt) {
 
         this.imageFile = evt.target.files[0];
+
+        if (!this.imageFile) {
+            this.submitButton.disable();
+            return;
+        }
+
+        this.submitButton.disabled = false;
 
 
         const reader = new FileReader();
@@ -54,6 +62,7 @@ export default class AddImage extends HTMLDivElement {
         formData.append('fileName', this.imageFile.name);
         formData.append('last-modified', this.imageFile.lastModified);
         formData.append('image-title', this.querySelector('[name="image-title"]').value)
+        formData.append('image-description', this.querySelector('[name="image-description"]').value)
         this.readFile().then(fileContent => {
             formData.append('content', fileContent);
             formData.append('content-type', this.imageFile.type)
@@ -63,21 +72,33 @@ export default class AddImage extends HTMLDivElement {
         return false;
     }
 
+    get submitButton() {
+        return this.querySelector('.add-image-button')
+    }
+
+    get cancelButton() {
+        return this.querySelector('button.cancel-button');
+    }
+
     render() {
         this.innerHTML = `<form onsubmit="return false"> 
 <div>
 <h2>Add new Image</h2>
-        <input type="file" name="upload-image" accept="image/*">
+        <input type="file"  name="upload-image" accept="image/*">
         </div>
         <div>
         <input type="text" name="image-title" placeholder="Image title">
         </div>
+        <textarea name="image-description" placeholder="Image description" ></textarea>
         <div class="image-preview"></div>
         <div>
-            <button type="submit">Add Image</button>
+            <button type="submit" disabled class="add-image-button"> <i class="fas fa-save"></i></button>
+            <button type="button" class="cancel-button"><i class="fas fa-window-close"></i></button>
             </div> 
         </form>
         `
+
+        this.setEvents();
     }
 }
 
