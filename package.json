@@ -6,7 +6,6 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-free": "^5.6.3",
     "atob": "^2.1.2",
     "base64-img": "^1.0.4",
     "body-parser": "^1.18.3",
