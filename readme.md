@@ -7,7 +7,8 @@ This code demonstrates image gallery build without any framework, but solely on 
 $ npm start
 ```  
 
-browse http://localhost:3000
+browse http://localhost:3000 
+(3000 is hte default port, it may change with env variables)
 
 
 ## Tech stack 

@@ -44,6 +44,16 @@ i {
   transition: color 1s linear;
 }
 
+div[is="add-image"]  div {
+  border-bottom: solid 1px;
+  margin-bottom: 10px;
+}
+div[is="add-image"]  div input,
+div[is="add-image"]  div textarea {
+  font-size: 24px;
+  border-style: none;
+
+}
 .rename-section input {
   font-size: 24px;
 }

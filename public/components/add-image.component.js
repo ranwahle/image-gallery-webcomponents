@@ -93,7 +93,9 @@ export default class AddImage extends HTMLDivElement {
         <div>
         <input type="text" name="image-title" placeholder="Image title">
         </div>
+        <div>
         <textarea name="image-description" placeholder="Image description" ></textarea>
+        </div>
         <div class="image-preview"></div>
        
         </form>
