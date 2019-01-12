@@ -1,0 +1,42 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+.images-container {
+  display: flex;
+  flex-wrap: wrap;
+  transition: height 500ms linear;
+}
+
+.small-image-container {
+  width: 15em;
+  height: 15em;
+  display:block;
+}
+.small-image-container img {
+  width: 10em;
+  height: 10em;
+}
+
+.disabled {
+  color: lightgray;
+  transition: color 1s linear;
+}
+
+.hidden {
+  visibility: hidden;
+  height: 0px;
+  transition: height 500ms linear;
+}
+
+button {
+  color: white;
+  background-color: blue;
+  font-weight: bold;
+  border-radius: 5px;
+}
