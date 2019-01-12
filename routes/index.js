@@ -2,8 +2,6 @@ const express = require('express');
 const router = express.Router();
 const imageStorage = require('../image-storage');
 const multiparty = require('multiparty');
-const base64Img = require('base64-img');
-const path = require('path')
 
 /* GET home page. */
 router.get('/', (req, res) =>{
