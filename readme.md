@@ -4,6 +4,7 @@ This code demonstrates image gallery build without any framework, but solely on 
 
 ## Running the application
 ```bash
+$ git clone https://github.com/ranwahle/image-gallery-webcomponents.git
 $ npm install
 $ npm start
 ```  
