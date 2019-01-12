@@ -36,9 +36,6 @@ router.delete('/delete-image/:index', (req, res) => {
     }, () => res.status(400).send(`Of course this is the client's fault`))
 })
 
-router.get('/fontawesome/all.css', (req, res) => {
-    res.status(200).sendFile(`${__dirname}/node_modules/@fortawesome/fontawesome-free/css/all.css`.replace('routes/',''))
-})
 
 router.post('/add-image', (req, res) => {
     const form = new multiparty.Form();

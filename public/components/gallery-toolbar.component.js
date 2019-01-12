@@ -4,7 +4,10 @@ export default class GalleryToolbar extends HTMLDivElement {
 
     connectedCallback() {
         this.render();
+
     }
+
+
 
     get addImageButton() {
         return this.querySelector('a[functional-id="add-image"]');
@@ -15,9 +18,16 @@ export default class GalleryToolbar extends HTMLDivElement {
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
-        if (name === 'add-image-disable' && newValue === 'disable') {
-            this.addImageButton.onclick = null;
-            this.addImageButton.classList.add('disabled')
+        if (name === 'add-image-disable') {
+            if (newValue === 'disable') {
+                this.addImageButton.onclick = null;
+                this.addImageButton.classList.add('disabled')
+            } else {
+                this.addImageButton.onclick = () => {
+                    this.dispatchEvent(addImageClick);
+                };
+                this.addImageButton.classList.remove('disabled')
+            }
         }
     }
 
@@ -28,7 +38,7 @@ export default class GalleryToolbar extends HTMLDivElement {
     </div>`
         this.addImageButton.onclick = () => {
             this.dispatchEvent(addImageClick);
-        }
+        };
 
     }
 }
