@@ -8,7 +8,7 @@ $ npm start
 ```  
 
 browse http://localhost:3000 
-(3000 is hte default port, it may change with env variables)
+(3000 is the default port, it may change with env variables)
 
 
 ## Tech stack 
