@@ -27,7 +27,7 @@ browse http://localhost:3000
 ## Implementation
 
 Because server side was not the main issue for this demo, the images are actually stored in the server memory. 
-It gives us persistence between refreshes, however, all data are lost when the server is restareted.
+It gives us persistence between refreshes, however, all data are lost when the server is restarted.
 
 On the client side we've divided to components
 
