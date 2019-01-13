@@ -32,7 +32,7 @@ It gives us persistence between refreshes, however, all data are lost when the s
 On the client side we've divided to components
 
 1. Image gallery component
-2. Add iamge compoennt: Contains a form to add the image 
+2. Add image compoennt: Contains a form to add the image 
 3. Small image component: Present image in grid layout (image & title)
 4. Detailed imege component: Present real size image with title, description and date properties.
     Also provides mechanism to change the title and delete the image
