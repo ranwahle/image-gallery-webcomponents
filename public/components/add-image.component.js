@@ -106,7 +106,8 @@ export default class AddImage extends HTMLDivElement {
             <button type="submit" disabled class="add-image-button"> <i class="fas fa-save"></i></button>
             <button type="button" class="cancel-button"><i class="fas fa-window-close"></i></button>
         </div>
-           <div class="status-div hidden"></div> 
+         <div class="status-div hidden"></div> 
+          <div>
         <input type="file"  name="upload-image" accept="image/*">
         </div>
         <div>
