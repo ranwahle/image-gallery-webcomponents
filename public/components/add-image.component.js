@@ -59,6 +59,7 @@ export default class AddImage extends HTMLDivElement {
 
     submitImage() {
         const formData = new FormData();
+        this.statusSection.classList.add('hidden')
         formData.append('fileName', this.imageFile.name);
         formData.append('last-modified', this.imageFile.lastModified);
         formData.append('image-title', this.querySelector('[name="image-title"]').value)
@@ -67,9 +68,25 @@ export default class AddImage extends HTMLDivElement {
             formData.append('content', fileContent);
             formData.append('content-type', this.imageFile.type)
             fetch('/add-image', {method: 'post', body: formData}).then(
-                () => this.dispatchEvent(imageAdded))
+                (response) => {
+                    if (response.ok) {
+                        this.dispatchEvent(imageAdded);
+                    } else {
+                       this.presentStatus(response)
+                    }
+                }
+                )
         })
         return false;
+    }
+
+    presentStatus(response) {
+        this.statusSection.classList.remove('hidden')
+        response.text().then(text => this.statusSection.textContent = text);
+    }
+
+    get statusSection() {
+        return this.querySelector('.status-div');
     }
 
     get submitButton() {
@@ -84,10 +101,12 @@ export default class AddImage extends HTMLDivElement {
         this.innerHTML = `<form onsubmit="return false"> 
 <div>
 <h2>Add new Image</h2>
+
         <div>
             <button type="submit" disabled class="add-image-button"> <i class="fas fa-save"></i></button>
             <button type="button" class="cancel-button"><i class="fas fa-window-close"></i></button>
-        </div> 
+        </div>
+           <div class="status-div hidden"></div> 
         <input type="file"  name="upload-image" accept="image/*">
         </div>
         <div>
@@ -97,7 +116,7 @@ export default class AddImage extends HTMLDivElement {
         <textarea name="image-description" placeholder="Image description" ></textarea>
         </div>
         <div class="image-preview"></div>
-       
+    
         </form>
         `
 

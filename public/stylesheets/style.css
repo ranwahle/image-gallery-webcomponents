@@ -17,6 +17,12 @@ div.gallery-container {
   transition: height 500ms linear;
 }
 
+.status-div {
+  color: red;
+  font-weight: bold;
+}
+
+
 .small-image-container {
   width: 15em;
   height: 15em;
