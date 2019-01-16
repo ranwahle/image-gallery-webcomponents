@@ -101,7 +101,7 @@ export default class AddImage extends HTMLDivElement {
         this.innerHTML = `<form onsubmit="return false"> 
 <div>
 <h2>Add new Image</h2>
-
+        
         <div>
             <button type="submit" disabled class="add-image-button"> <i class="fas fa-save"></i></button>
             <button type="button" class="cancel-button"><i class="fas fa-window-close"></i></button>

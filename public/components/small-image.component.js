@@ -45,11 +45,17 @@ export default class SmallImage extends HTMLDivElement {
 
 
     render() {
-        this.innerHTML = `<div  class="small-image-container"><img>
+        this.innerHTML = `<div  class="small-image-container"><img class="hidden">
     <div></div> 
     </div>`;
 
+        this.imageElement.onload = () => {
+            this.style.width = this.imageElement.width;
+            this.style.height = this.imageElement.height;
+        }
         this.imageElement.src = this.imageContent;
+        this.style['background-image'] = `url(${this.imageContent})`;
+        this.style['background-size'] = '100%';
         this.titleElement.innerText = this.imageTitle;
 
 

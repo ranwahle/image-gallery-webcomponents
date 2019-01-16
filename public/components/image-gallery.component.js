@@ -27,7 +27,7 @@ export default class ImageGallery extends HTMLDivElement {
 
     renderDetailedImage() {
         if (this.displayedImage) {
-            this.imagesContainer.classList.add('side-show')
+           // this.imagesContainer.classList.add('side-show')
             this.detailedImage.classList.remove('hidden');
             this.detailedImage.setAttribute('image-content', this.displayedImage.content);
             this.detailedImage.setAttribute('image-title', this.displayedImage.title);
@@ -35,7 +35,7 @@ export default class ImageGallery extends HTMLDivElement {
             this.detailedImage.setAttribute('image-description', this.displayedImage.description);
 
         } else {
-            this.imagesContainer.classList.remove('side-show');
+           // this.imagesContainer.classList.remove('side-show');
             this.detailedImage.classList.add('hidden');
         }
     }
@@ -61,6 +61,7 @@ export default class ImageGallery extends HTMLDivElement {
         this.images.forEach(
             image => {
                 const imageElement = document.createElement('div', {is: 'small-image'});
+                imageElement.style.margin = '2px';
                 imageElement.setAttribute('image-content', image.content);
                 imageElement.setAttribute('image-title', image.title);
                 imageElement.addEventListener('image-click', () => this.displayDetailedImage(image));
@@ -102,8 +103,9 @@ export default class ImageGallery extends HTMLDivElement {
     reset() {
         this.galleryContainer.classList.remove('hidden');
         this.addImageComponent.classList.add('hidden');
-
+        this.classList.remove('blurry');
         this.toolbarComponent.setAttribute('add-image-disable', '')
+        this.displayedImage = null;
     }
 
     get addNewImageElement() {
@@ -127,7 +129,8 @@ export default class ImageGallery extends HTMLDivElement {
         })
 
         this.detailedImage.addEventListener('close-detailed-image', () => {
-            this.displayedImage = null;
+
+            this.reset();
         })
 
 
@@ -153,15 +156,17 @@ export default class ImageGallery extends HTMLDivElement {
                         return;
                     }
                     this.images = this.images.filter(img => img !== this.displayedImage);
-                    this.displayedImage = null;
+                    this.reset();
             });
         })
 
     }
 
     render() {
-        this.innerHTML = `<h1>Image Gallery</h1>
-            <div is="gallery-toolbar"></div>
+        this.innerHTML = `<div style="display: flex"><h1>Image Gallery
+           </h1>
+<div is="gallery-toolbar"></div>
+</div>
             <div class="gallery-container">
             ${this.renderImagesContainer()}
             <div is="detailed-image" class="hidden"></div>

@@ -7,6 +7,8 @@ export default class DetailedImage extends HTMLDivElement {
     attributeChangedCallback(name, oldValue, newValue) {
         if (name === 'image-content') {
             this.imageElement.setAttribute('src', newValue);
+            this.adjustWidhAndHeight();
+
         }
         if (name === 'image-title') {
             this.titleElement.textContent = newValue;
@@ -16,6 +18,19 @@ export default class DetailedImage extends HTMLDivElement {
         }
         if (name === 'image-description') {
             this.descriptionElement.textContent = newValue;
+        }
+        if (name === 'shown') {
+            this.adjustWidhAndHeight();
+        }
+    }
+
+    adjustWidhAndHeight() {
+        if (this.classList.contains('hidden')) {
+            delete this.style.width;
+            delete this.style.height;
+        } else {
+            this.style.width = window.screen.availWidth;
+            this.style.height = window.screen.availHeight;
         }
     }
 
@@ -73,7 +88,7 @@ export default class DetailedImage extends HTMLDivElement {
 
     setReadonlyState() {
         this.titleSectionElement.classList.remove('hidden');
-       // this.editTitleElement.classList.remove  ('hidden');
+        // this.editTitleElement.classList.remove  ('hidden');
         this.editTitleSection.classList.add('hidden')
     }
 
@@ -85,11 +100,15 @@ export default class DetailedImage extends HTMLDivElement {
         return this.querySelector('.delete-image');
     }
 
+    get shadowElement() {
+        return this.querySelector('.shadow-div');
+    }
+
     setEventHandlers() {
         this.imageElement.setAttribute('src', this.getAttribute('image-content'))
         this.closeElement.onclick = () => this.dispatchEvent(new CustomEvent('close-detailed-image'))
         this.editTitleElement.onclick = () => this.setEditState();
-        this.saveTitleButton.onclick = () =>  {
+        this.saveTitleButton.onclick = () => {
             this.dispatchEvent(new CustomEvent('update-title', {detail: this.titleTextbox.value}))
             this.setReadonlyState();
         }
@@ -101,11 +120,14 @@ export default class DetailedImage extends HTMLDivElement {
 
     render() {
         this.innerHTML = `<div>
-        <div>
+<div class="blurry shadow-div"></div>
+<div class="popup-container">
+        <div class="detailed-image-container">
                 <a href="javascript:void(0)" class="close-button"><i class="fas fa-window-close"></i></a>
                  <a href="javascript:void(0)" class="delete-image"><i class="fas fa-trash"></i></a>
                  </div>
-            <img class="detailed-image"> 
+         
+         <div>
             <h2>
                 <span class="title-container"></span>
                 <a href="javascript:void(0)" class="edit-title"><i class="fas fa-pencil-alt"></i></a>
@@ -118,8 +140,11 @@ export default class DetailedImage extends HTMLDivElement {
             </div>
             <div class="image-description"></div>
             Last Modified: <span class="image-date"></span>
-            
-           
+         </div>
+         
+            <img class="detailed-image"> 
+        </div>
+          
 </div>`
 
         this.setEventHandlers();
