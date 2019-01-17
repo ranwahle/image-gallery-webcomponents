@@ -1,7 +1,7 @@
 export default class DetailedImage extends HTMLDivElement {
 
     static get observedAttributes() {
-        return ['image-content', 'image-title', 'image-description', 'image-date'];
+        return ['image-content', 'image-title', 'image-description', 'image-date', 'next-disabled', 'prev-disabled'];
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
@@ -22,6 +22,23 @@ export default class DetailedImage extends HTMLDivElement {
         if (name === 'shown') {
             this.adjustWidhAndHeight();
         }
+        if (name === 'prev-disabled') {
+            if (newValue === 'true') {
+                this.prevImageElement.classList.add('hidden')
+            } else {
+                this.prevImageElement.classList.remove('hidden')
+            }
+
+
+        }
+        if (name === 'next-disabled') {
+            if (newValue === 'true') {
+                this.nextImageElement.classList.add('hidden')
+            } else {
+                this.nextImageElement.classList.remove('hidden')
+            }
+        }
+
     }
 
     adjustWidhAndHeight() {
@@ -104,7 +121,18 @@ export default class DetailedImage extends HTMLDivElement {
         return this.querySelector('.shadow-div');
     }
 
+    get prevImageElement() {
+        return this.querySelector('[functional-id="prev-image"')
+    }
+
+
+    get nextImageElement() {
+        return this.querySelector('[functional-id="next-image"')
+    }
+
+
     setEventHandlers() {
+
         this.imageElement.setAttribute('src', this.getAttribute('image-content'))
         this.closeElement.onclick = () => this.dispatchEvent(new CustomEvent('close-detailed-image'))
         this.editTitleElement.onclick = () => this.setEditState();
@@ -116,6 +144,14 @@ export default class DetailedImage extends HTMLDivElement {
         this.deleteImageButton.onclick = () => {
             this.dispatchEvent(new CustomEvent('delete-image'));
         }
+
+        this.nextImageElement.onclick = () => {
+            this.dispatchEvent(new CustomEvent('next-image'));
+        }
+        this.prevImageElement.onclick = () => {
+            this.dispatchEvent(new CustomEvent('prev-image'));
+        }
+
     }
 
     render() {
@@ -123,11 +159,20 @@ export default class DetailedImage extends HTMLDivElement {
 <div class="blurry shadow-div"></div>
 <div class="popup-container">
         <div class="detailed-image-container">
+       
                 <a href="javascript:void(0)" class="close-button"><i class="fas fa-window-close"></i></a>
                  <a href="javascript:void(0)" class="delete-image"><i class="fas fa-trash"></i></a>
+              
                  </div>
-         
-         <div>
+                 
+        
+         <div style="display: flex;" >
+          <div class="arrows-button">
+          
+          <a href="javascript:void(0)" functional-id="prev-image"><i class="fas fa-chevron-left"></i></a>
+          </div>
+          <div class="detailed-image-container">
+          <div class="image-details" >
             <h2>
                 <span class="title-container"></span>
                 <a href="javascript:void(0)" class="edit-title"><i class="fas fa-pencil-alt"></i></a>
@@ -139,11 +184,18 @@ export default class DetailedImage extends HTMLDivElement {
 </a>
             </div>
             <div class="image-description"></div>
-            Last Modified: <span class="image-date"></span>
+            <span class="field-label"> Last Modified:</span> <span class="image-date"></span>
          </div>
          
             <img class="detailed-image"> 
+            </div>
+            </div>
+         
+            <div class="arrows-button">
+                 <a href="javascript:void(0)" functional-id="next-image"><i class="fas fa-chevron-right"></i></a>
+                 </div>
         </div>
+      
           
 </div>`
 

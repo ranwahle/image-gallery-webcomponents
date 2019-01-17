@@ -27,15 +27,19 @@ export default class ImageGallery extends HTMLDivElement {
 
     renderDetailedImage() {
         if (this.displayedImage) {
-           // this.imagesContainer.classList.add('side-show')
+            // this.imagesContainer.classList.add('side-show')
             this.detailedImage.classList.remove('hidden');
             this.detailedImage.setAttribute('image-content', this.displayedImage.content);
             this.detailedImage.setAttribute('image-title', this.displayedImage.title);
             this.detailedImage.setAttribute('image-date', this.displayedImage.lastModified);
             this.detailedImage.setAttribute('image-description', this.displayedImage.description);
+            const currentIndex = this.images.indexOf(this.displayedImage);
+            this.detailedImage.setAttribute('prev-disabled', currentIndex === 0);
+            this.detailedImage.setAttribute('next-disabled', currentIndex === this.images.length - 1);
+
 
         } else {
-           // this.imagesContainer.classList.remove('side-show');
+            // this.imagesContainer.classList.remove('side-show');
             this.detailedImage.classList.add('hidden');
         }
     }
@@ -71,7 +75,7 @@ export default class ImageGallery extends HTMLDivElement {
     }
 
     displayDetailedImage(image) {
-            this.displayedImage = image;
+        this.displayedImage = image;
     }
 
     addImageClick() {
@@ -109,12 +113,27 @@ export default class ImageGallery extends HTMLDivElement {
     }
 
     get addNewImageElement() {
-        return  this.querySelector('div[is="add-image"]');
+        return this.querySelector('div[is="add-image"]');
+    }
+
+    moveImage(forward) {
+        const currentIndex = this.images.indexOf(this.displayedImage);
+        const nextIndex = forward ? currentIndex + 1 : currentIndex - 1;
+        if (isNaN(currentIndex) || nextIndex < 0 || nextIndex >= this.images.length) {
+            return
+        }
+        this.displayDetailedImage(this.images[nextIndex]);
     }
 
 
     setEvents() {
 
+        document.addEventListener('keydown', keyEvent => {
+            const keyName = keyEvent.key;
+            if (keyName === 'Escape') {
+                this.reset();
+            }
+        })
         this.addNewImageElement.addEventListener('image-added', () => {
             this.getImages();
             this.reset();
@@ -133,6 +152,13 @@ export default class ImageGallery extends HTMLDivElement {
             this.reset();
         })
 
+        this.detailedImage.addEventListener('prev-image', () => {
+            this.moveImage(false)
+        })
+
+        this.detailedImage.addEventListener('next-image', () => {
+            this.moveImage(true);
+        })
 
 
         this.detailedImage.addEventListener('update-title', evt => {
@@ -143,9 +169,11 @@ export default class ImageGallery extends HTMLDivElement {
             image.title = evt.detail;
             this.addImageElements();
             this.renderDetailedImage();
-            fetch('/update-image', {method: 'put',
+            fetch('/update-image', {
+                method: 'put',
                 headers: new Headers({'content-type': 'application/json'}),
-                body:JSON.stringify({index:  this.images.indexOf(image), title: image.title})})
+                body: JSON.stringify({index: this.images.indexOf(image), title: image.title})
+            })
 
         })
 
@@ -157,14 +185,14 @@ export default class ImageGallery extends HTMLDivElement {
                     }
                     this.images = this.images.filter(img => img !== this.displayedImage);
                     this.reset();
-            });
+                });
         })
 
     }
 
     render() {
-        this.innerHTML = `<div style="display: flex"><h1>Image Gallery
-           </h1>
+        this.innerHTML = `<div style="display: flex; align-items: center;"><div><h1>Image Gallery
+           </h1></div>
 <div is="gallery-toolbar"></div>
 </div>
             <div class="gallery-container">
@@ -179,7 +207,6 @@ export default class ImageGallery extends HTMLDivElement {
         this.addImageElements();
 
         this.setEvents();
-
 
 
     }

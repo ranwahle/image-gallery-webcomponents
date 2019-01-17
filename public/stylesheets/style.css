@@ -70,6 +70,7 @@ i {
 .popup-container {
   z-index: 1000;
   position: absolute;
+  display: flex;
 }
 
 div[is="detailed-image"] {
@@ -78,8 +79,21 @@ div[is="detailed-image"] {
   z-index: 1000;
 }
 
+.field-label {
+  font-weight: bold;
+}
+
 .blurry {
   opacity: 0.9;
+}
+
+.arrows-button {
+  align-items: center;
+  display: flex;
+  }
+
+.arrows-button a i {
+  font-size: 72px;
 }
 
 div[is="add-image"]  div div {
