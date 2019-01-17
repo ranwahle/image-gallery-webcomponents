@@ -1,4 +1,4 @@
-export default class ImageGallery extends HTMLDivElement {
+    export default class ImageGallery extends HTMLDivElement {
 
     get displayedImage() {
         return this._displayedimage;
@@ -18,8 +18,7 @@ export default class ImageGallery extends HTMLDivElement {
         this.render();
     }
 
-    constructor() {
-        super();
+    connectedCallback() {
         this.images = [];
         this.render();
         this.getImages();
@@ -64,11 +63,13 @@ export default class ImageGallery extends HTMLDivElement {
         this.imagesContainer.innerHTML = '';
         this.images.forEach(
             image => {
-                const imageElement = document.createElement('div', {is: 'small-image'});
+                const imageElement = document.createElement(
+                    'div', {is: 'small-image'});
                 imageElement.style.margin = '2px';
                 imageElement.setAttribute('image-content', image.content);
                 imageElement.setAttribute('image-title', image.title);
-                imageElement.addEventListener('image-click', () => this.displayDetailedImage(image));
+                imageElement.addEventListener('image-click',
+                    () => this.displayDetailedImage(image));
                 this.imagesContainer.appendChild(imageElement);
             }
         )
@@ -193,8 +194,8 @@ export default class ImageGallery extends HTMLDivElement {
     render() {
         this.innerHTML = `<div style="display: flex; align-items: center;"><div><h1>Image Gallery
            </h1></div>
-<div is="gallery-toolbar"></div>
-</div>
+            <div is="gallery-toolbar"></div>
+            </div>
             <div class="gallery-container">
             ${this.renderImagesContainer()}
             <div is="detailed-image" class="hidden"></div>
