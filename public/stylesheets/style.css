@@ -85,6 +85,10 @@ div.image-title {
   color: white;
 }
 
+.image-description {
+  margin-bottom: 10px;
+}
+
 .field-label {
   font-weight: bold;
 }
