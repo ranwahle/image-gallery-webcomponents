@@ -35,7 +35,7 @@ export default class SmallImage extends HTMLDivElement {
 
 
     get titleElement() {
-        return this.querySelector('div.small-image-container div');
+        return this.querySelector('div.image-title');
     }
 
 
@@ -45,8 +45,10 @@ export default class SmallImage extends HTMLDivElement {
 
 
     render() {
-        this.innerHTML = `<div  class="small-image-container"><img class="hidden">
-    <div></div> 
+        this.innerHTML = `<div  class="small-image-container">
+        <div class="image-title"></div> 
+        <img class="hidden">
+   
     </div>`;
 
         this.imageElement.onload = () => {

@@ -79,6 +79,12 @@ div[is="detailed-image"] {
   z-index: 1000;
 }
 
+div.image-title {
+  background-color: black;
+  opacity: 0.4;
+  color: white;
+}
+
 .field-label {
   font-weight: bold;
 }
