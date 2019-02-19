@@ -97,15 +97,12 @@ export default class DetailedImage extends HTMLDivElement {
 
     setEditState() {
         this.titleSectionElement.classList.add('hidden');
-        // this.titleElement.classList.add('hidden');
-        // this.editTitleElement.classList.add  ('hidden');
         this.editTitleSection.classList.remove('hidden')
         this.titleTextbox.value = this.getAttribute('image-title')
     }
 
     setReadonlyState() {
         this.titleSectionElement.classList.remove('hidden');
-        // this.editTitleElement.classList.remove  ('hidden');
         this.editTitleSection.classList.add('hidden')
     }
 
