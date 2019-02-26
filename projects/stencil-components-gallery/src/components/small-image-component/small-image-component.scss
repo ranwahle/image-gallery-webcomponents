@@ -1,0 +1,17 @@
+:host {
+  .small-image-container {
+
+    width: 15em;
+    height: 15em;
+    display:block;
+    opacity: 1;
+    cursor: pointer;
+    transition: transform .135s cubic-bezier(0.0,0.0,0.2,1),opacity linear .15s;
+  }
+  background-image: var(--background-image);
+  background-size: 100%;
+  .hidden {
+    width: 0px;
+    height: 0px;
+  }
+}

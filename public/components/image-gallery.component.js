@@ -63,8 +63,8 @@
         this.imagesContainer.innerHTML = '';
         this.images.forEach(
             image => {
-                const imageElement = document.createElement(
-                    'div', {is: 'small-image'});
+                const imageElement = document.createElement('small-image-component');
+                  //  'div', {is: 'small-image'});
                 imageElement.style.margin = '2px';
                 imageElement.setAttribute('image-content', image.content);
                 imageElement.setAttribute('image-title', image.title);
