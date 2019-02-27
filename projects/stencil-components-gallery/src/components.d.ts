@@ -32,6 +32,7 @@ export namespace Components {
     */
     'imageTitle'?: string;
     'onImage-click'?: (event: CustomEvent) => void;
+    'onImage-load'?: (event: CustomEvent) => void;
   }
 }
 

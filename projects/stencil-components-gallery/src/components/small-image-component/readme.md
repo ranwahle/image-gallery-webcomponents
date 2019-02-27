@@ -18,6 +18,7 @@
 | Event         | Description | Type                |
 | ------------- | ----------- | ------------------- |
 | `image-click` |             | `CustomEvent<void>` |
+| `image-load`  |             | `CustomEvent<void>` |
 
 
 ----------------------------------------------

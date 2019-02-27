@@ -22,6 +22,8 @@ export class SmallImageComponent {
 
   @Event({eventName: 'image-click'}) imageClicked: EventEmitter;
 
+  @Event({eventName: 'image-load'}) imageLoad: EventEmitter;
+
 
   componentDidUpdate() {
 
@@ -48,6 +50,7 @@ export class SmallImageComponent {
     console.log("image element", this.imageElement);
     this.imageWidth = this.imageElement.width;
     this.imageHeight = this.imageElement.height;
+    this.imageLoad.emit();
 
   }
 
@@ -68,6 +71,8 @@ export class SmallImageComponent {
 
   render() {
     this.componentElement.style.setProperty('--background-image', `url(${this.imageContent})`)
+    this.componentElement.style.setProperty('--image-width', this.imageWidth)
+    this.componentElement.style.setProperty('--image-height', this.imageHeight);
     return (<div class="small-image-container">
       <div class="image-title">{this.imageTitle}</div>
       <img class="hidden" onLoad={this.imageLoaded.bind(this)} style={this.getStyle()} src={this.imageContent}/>
