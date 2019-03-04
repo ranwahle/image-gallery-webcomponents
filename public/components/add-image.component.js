@@ -1,3 +1,5 @@
+import Router from '../router.js';
+
 export const imageAdded = new CustomEvent('image-added')
 
 export default class AddImage extends HTMLDivElement {
@@ -70,7 +72,8 @@ export default class AddImage extends HTMLDivElement {
             fetch('/add-image', {method: 'post', body: formData}).then(
                 (response) => {
                     if (response.ok) {
-                        this.dispatchEvent(imageAdded);
+                        Router.navigate('/')
+                        // this.dispatchEvent(imageAdded);
                     } else {
                        this.presentStatus(response)
                     }

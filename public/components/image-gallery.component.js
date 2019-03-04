@@ -21,7 +21,6 @@
     connectedCallback() {
         this.images = [];
         this.render();
-        this.getImages();
     }
 
     renderDetailedImage() {
@@ -43,37 +42,12 @@
         }
     }
 
-    getImages() {
-        fetch('/images/').then(resp => resp.json()).then(images => this.images = images);
-    }
 
 
-    renderImagesContainer() {
-        let imagesString = `<div class="images-container">`;
-        if (!this.images || this.images.length === 0) {
-            imagesString += `No Images</div>`
-            return imagesString;
-        }
-        imagesString += `</div>`
 
-        return imagesString;
-    }
 
-    addImageElements() {
-        this.imagesContainer.innerHTML = '';
-        this.images.forEach(
-            image => {
-                const imageElement = document.createElement(
-                    'div', {is: 'small-image'});
-                imageElement.style.margin = '2px';
-                imageElement.setAttribute('image-content', image.content);
-                imageElement.setAttribute('image-title', image.title);
-                imageElement.addEventListener('image-click',
-                    () => this.displayDetailedImage(image));
-                this.imagesContainer.appendChild(imageElement);
-            }
-        )
-    }
+
+
 
     displayDetailedImage(image) {
         this.displayedImage = image;
@@ -94,7 +68,7 @@
     }
 
     get imagesContainer() {
-        return this.querySelector('div.images-container');
+        return this.querySelector('div[is="images-container"]');
     }
 
     get galleryContainer() {
@@ -191,13 +165,18 @@
 
     }
 
+
+
+
+
     render() {
         this.innerHTML = `<div style="display: flex; align-items: center;"><div><h1>Image Gallery
            </h1></div>
             <div is="gallery-toolbar"></div>
             </div>
+            <router-outlet></router-outlet>
             <div class="gallery-container">
-            ${this.renderImagesContainer()}
+            
             <div is="detailed-image" class="hidden"></div>
             
             </div>
@@ -205,7 +184,7 @@
             `;
 
 
-        this.addImageElements();
+       // this.addImageElements();
 
         this.setEvents();
 

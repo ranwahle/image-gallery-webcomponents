@@ -20,12 +20,9 @@ export default class GalleryToolbar extends HTMLDivElement {
     attributeChangedCallback(name, oldValue, newValue) {
         if (name === 'add-image-disable') {
             if (newValue === 'disable') {
-                this.addImageButton.onclick = null;
                 this.addImageButton.classList.add('disabled')
             } else {
-                this.addImageButton.onclick = () => {
-                    this.dispatchEvent(addImageClick);
-                };
+
                 this.addImageButton.classList.remove('disabled')
             }
         }
@@ -33,12 +30,9 @@ export default class GalleryToolbar extends HTMLDivElement {
 
     render() {
         this.innerHTML = `<div class="toolbar">
-          <a title="Add image" functional-id="add-image" href="javascript:void(0)"> <i class="fas fa-plus"></i> </a>
+          <a title="Add image" functional-id="add-image" is="self-routing-anchor" href="/addImage"> <i class="fas fa-plus"></i> </a>
           
     </div>`
-        this.addImageButton.onclick = () => {
-            this.dispatchEvent(addImageClick);
-        };
 
     }
 }
