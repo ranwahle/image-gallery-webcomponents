@@ -31,15 +31,19 @@ export default class ImagesContainer extends HTMLDivElement {
     addImageElements(imagesContainer) {
        //  this.imagesContainer.innerHTML = '';
         this.images.forEach(
-            image => {
+            (image, index) => {
+                const anchorElement = document.createElement('a', {is: 'self-routing-anchor'});
+                anchorElement.setAttribute('href',`image/${index}`);
+
                 const imageElement = document.createElement(
                     'div', {is: 'small-image'});
                 imageElement.style.margin = '2px';
                 imageElement.setAttribute('image-content', image.content);
                 imageElement.setAttribute('image-title', image.title);
-                imageElement.addEventListener('image-click',
-                    () => this.displayDetailedImage(image));
-                imagesContainer.appendChild(imageElement);
+              //  imageElement.addEventListener('image-click',
+              //      () => this.displayDetailedImage(image));
+                anchorElement.appendChild(imageElement);
+                imagesContainer.appendChild(anchorElement);
             }
         )
     }

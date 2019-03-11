@@ -14,6 +14,26 @@ router.get('/images', (req, res) => {
     })
 });
 
+router.get('/images/:index', (req, res) => {
+    imageStorage.readImageDirectory().then((files) => {
+        const image = files[+req.params.index];
+        if (image) {
+            res.setHeader('content-type', image.contentType);
+
+            const regex = /^data:.+\/(.+);base64,(.*)$/;
+
+            const matches = image.content.match(regex);
+
+            const data = matches[2];
+            const buffer = new Buffer(data, 'base64');
+            res.status(200).send(buffer).end();
+        } else {
+            res.status(404).end();
+        }
+
+    })
+})
+
 /**
  * This route will get the image content only
  */

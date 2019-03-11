@@ -1,5 +1,4 @@
-import * as routes from '../routes.js';
-
+import module from './index.js';
 export default class RouterOutlet extends HTMLElement {
 
     static get observedAttributes() {
@@ -21,17 +20,26 @@ export default class RouterOutlet extends HTMLElement {
     }
 
 
+
+
     changeRoute(newRoute) {
-        if (newRoute.endsWith('/')) {
-            newRoute = newRoute.substring(0, newRoute.length - 1);
+       //  if (newRoute.endsWith('/')) {
+       //      newRoute = newRoute.substring(0, newRoute.length - 1);
+       //  }
+       //  const newRouteData = routes.default.find(item => item.path === newRoute)
+       // if (!newRouteData) {
+       //     console.error(`no route data found for ${newRoute}`)
+       //     return;
+       // }
+
+        const newRouteData = module.Router.router.routingSnapshotTreeBuilder.buildRouteTree(newRoute);
+
+        if (!newRouteData) {
+            throw Error(`Could not build tree for ${newRoute}`);
         }
-        const newRouteData = routes.default.find(item => item.path === newRoute)
-       if (!newRouteData) {
-           console.error(`no route data found for ${newRoute}`)
-           return;
-       }
 
        this.clearChildren();
+
 
         if (!newRouteData.attributes) {
             newRouteData.attributes = {};

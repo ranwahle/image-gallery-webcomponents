@@ -1,4 +1,4 @@
-import Router from '../router.js';
+import routingModule from '../routingModule/index.js';
 
 export const imageAdded = new CustomEvent('image-added')
 
@@ -13,7 +13,7 @@ export default class AddImage extends HTMLDivElement {
     setEvents() {
         this.querySelector('form').onsubmit = () => this.submitImage();
         this.querySelector('[name="upload-image"]').addEventListener('change', (evt) => this.readImage(evt))
-        this.cancelButton.onclick = () => this.dispatchEvent(new CustomEvent( 'add-image-cancel'));
+        this.cancelButton.onclick = () =>  routingModule.Router.router.navigate('/') // this.dispatchEvent(new CustomEvent( 'add-image-cancel'));
     }
 
     readFile() {
@@ -24,6 +24,7 @@ export default class AddImage extends HTMLDivElement {
                     resolve(fileReadEvent.target.result);
                 })(fileRead);
             }
+            reader.onerror = err => console.log('error reading file', err);
             reader.readAsDataURL(this.imageFile);
         })
     }
@@ -72,7 +73,7 @@ export default class AddImage extends HTMLDivElement {
             fetch('/add-image', {method: 'post', body: formData}).then(
                 (response) => {
                     if (response.ok) {
-                        Router.navigate('/')
+                        routingModule.Router.router.navigate('/')
                         // this.dispatchEvent(imageAdded);
                     } else {
                        this.presentStatus(response)

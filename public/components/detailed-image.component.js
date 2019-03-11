@@ -1,3 +1,5 @@
+import routingModule from '../routingModule/index.js';
+
 export default class DetailedImage extends HTMLDivElement {
 
     static get observedAttributes() {
@@ -130,7 +132,7 @@ export default class DetailedImage extends HTMLDivElement {
 
     setEventHandlers() {
 
-        this.imageElement.setAttribute('src', this.getAttribute('image-content'))
+       // this.imageElement.setAttribute('src', this.getAttribute('image-content'))
         this.closeElement.onclick = () => this.dispatchEvent(new CustomEvent('close-detailed-image'))
         this.editTitleElement.onclick = () => this.setEditState();
         this.saveTitleButton.onclick = () => {
@@ -142,16 +144,11 @@ export default class DetailedImage extends HTMLDivElement {
             this.dispatchEvent(new CustomEvent('delete-image'));
         }
 
-        this.nextImageElement.onclick = () => {
-            this.dispatchEvent(new CustomEvent('next-image'));
-        }
-        this.prevImageElement.onclick = () => {
-            this.dispatchEvent(new CustomEvent('prev-image'));
-        }
 
     }
 
     render() {
+        const parameters = routingModule.Router.router.currentSnapshot.params;
         this.innerHTML = `<div>
 <div class="blurry shadow-div"></div>
 <div class="popup-container">
@@ -166,7 +163,7 @@ export default class DetailedImage extends HTMLDivElement {
          <div style="display: flex;" >
           <div class="arrows-button">
           
-          <a href="javascript:void(0)" functional-id="prev-image"><i class="fas fa-chevron-left"></i></a>
+          <a href="./${parameters.index-1}" is="self-routing-anchor" functional-id="prev-image"><i class="fas fa-chevron-left"></i></a>
           </div>
           <div class="detailed-image-container">
           <div class="image-details" >
@@ -189,13 +186,14 @@ export default class DetailedImage extends HTMLDivElement {
             </div>
          
             <div class="arrows-button">
-                 <a href="javascript:void(0)" functional-id="next-image"><i class="fas fa-chevron-right"></i></a>
+                 <a href="./${+(parameters.index)+1}" is="self-routing-anchor" functional-id="next-image"><i class="fas fa-chevron-right"></i></a>
                  </div>
         </div>
       
           
 </div>`
 
+        this.imageElement.setAttribute('src', `/images/${parameters.index}`)
         this.setEventHandlers();
     }
 

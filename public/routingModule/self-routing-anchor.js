@@ -1,4 +1,4 @@
-import Router from '../router.js';
+import routing from './index.js';
 
 export default class SelfRoutingAnchor extends  HTMLAnchorElement {
 
@@ -17,7 +17,7 @@ export default class SelfRoutingAnchor extends  HTMLAnchorElement {
         this.onclick = evt => {
             evt.stopPropagation();
             evt.preventDefault();
-            Router.navigate(this.newLocation);
+            routing.Router.router.navigate(this.href);
             // history.pushState(null, null, this.newLocation)
             return false;
         }

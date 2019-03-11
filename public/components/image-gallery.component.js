@@ -122,47 +122,6 @@
             this.addImageClick();
         })
 
-        this.detailedImage.addEventListener('close-detailed-image', () => {
-
-            this.reset();
-        })
-
-        this.detailedImage.addEventListener('prev-image', () => {
-            this.moveImage(false)
-        })
-
-        this.detailedImage.addEventListener('next-image', () => {
-            this.moveImage(true);
-        })
-
-
-        this.detailedImage.addEventListener('update-title', evt => {
-            const image = this.images.find(image => image === this.displayedImage)
-            if (!image) {
-                return;
-            }
-            image.title = evt.detail;
-            this.addImageElements();
-            this.renderDetailedImage();
-            fetch('/update-image', {
-                method: 'put',
-                headers: new Headers({'content-type': 'application/json'}),
-                body: JSON.stringify({index: this.images.indexOf(image), title: image.title})
-            })
-
-        })
-
-        this.detailedImage.addEventListener('delete-image', () => {
-            fetch(`/delete-image/${this.images.indexOf(this.displayedImage)}`, {method: 'delete'})
-                .then((res) => {
-                    if (!res.ok) {
-                        return;
-                    }
-                    this.images = this.images.filter(img => img !== this.displayedImage);
-                    this.reset();
-                });
-        })
-
     }
 
 
@@ -177,7 +136,7 @@
             <router-outlet></router-outlet>
             <div class="gallery-container">
             
-            <div is="detailed-image" class="hidden"></div>
+            <!--<div is="detailed-image" class="hidden"></div>-->
             
             </div>
             <div class="hidden" is="add-image"></div>
