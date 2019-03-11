@@ -49,7 +49,6 @@ export default class ImagesContainer extends HTMLDivElement {
     }
 
     connectedCallback() {
-        console.log('images container connected')
         this.getImages();
     }
 }

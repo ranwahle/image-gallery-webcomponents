@@ -23,20 +23,14 @@ export default class RouterOutlet extends HTMLElement {
 
 
     changeRoute(newRoute) {
-       //  if (newRoute.endsWith('/')) {
-       //      newRoute = newRoute.substring(0, newRoute.length - 1);
-       //  }
-       //  const newRouteData = routes.default.find(item => item.path === newRoute)
-       // if (!newRouteData) {
-       //     console.error(`no route data found for ${newRoute}`)
-       //     return;
-       // }
 
         const newRouteData = module.Router.router.routingSnapshotTreeBuilder.buildRouteTree(newRoute);
 
         if (!newRouteData) {
             throw Error(`Could not build tree for ${newRoute}`);
         }
+
+        module.Router.router.currentSnapshot = newRouteData;
 
        this.clearChildren();
 
@@ -48,7 +42,8 @@ export default class RouterOutlet extends HTMLElement {
        Object.keys(newRouteData.attributes  || {}).forEach(key => {
            newElement.setAttribute(key, newRouteData.attributes[key])
        })
-       this.appendChild(newElement);
+        setTimeout(() =>
+       this.appendChild(newElement))
 
 
 
@@ -58,7 +53,6 @@ export default class RouterOutlet extends HTMLElement {
 
     connectedCallback() {
         window.onpopstate = (e) => {
-            console.log('pop state', e)
             this.changeRoute(window.location.pathname)
         }
         window.onpushstate =  (e) => {

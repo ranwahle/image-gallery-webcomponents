@@ -24,7 +24,7 @@ export default class AddImage extends HTMLDivElement {
                     resolve(fileReadEvent.target.result);
                 })(fileRead);
             }
-            reader.onerror = err => console.log('error reading file', err);
+            reader.onerror = err => console.error('error reading file', err);
             reader.readAsDataURL(this.imageFile);
         })
     }

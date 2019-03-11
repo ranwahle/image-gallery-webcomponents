@@ -82,6 +82,7 @@ export default class DetailedImage extends HTMLDivElement {
     }
 
     connectedCallback() {
+
         this.render();
     }
 
