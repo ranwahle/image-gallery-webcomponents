@@ -2,10 +2,10 @@ import RoutingSnapshotTreeBuilder from './routing-snapshot-tree-builder.js';
 
 export default class Router {
 
-    routingSnapshotTreeBuilder;
-    currentSnapshot;
+    // routingSnapshotTreeBuilder;
+    // currentSnapshot;
 
-    static router;
+   // static router;
     static appRouter(routes) {
         Router.router = new Router(routes);
         return Router.router;
@@ -20,7 +20,11 @@ export default class Router {
     }
 
     navigate(url) {
-]        url = new URL(url).pathname;
+        try {
+            url = url === '/' ? url :  new URL(url).pathname;
+        } catch (err) {
+            throw Error(`Cannot construct url fro, ${url}`)
+        }
         history.pushState(null, null, url);
 
         this.currentSnapshot = this.routingSnapshotTreeBuilder.buildRouteTree(url);

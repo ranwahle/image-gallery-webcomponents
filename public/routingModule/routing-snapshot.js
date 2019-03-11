@@ -1,5 +1,5 @@
 export default class RoutingSnapshot {
-    parameters;
-    queryParameters;
-    path;
+    // parameters;
+    // queryParameters;
+    // path;
 }
