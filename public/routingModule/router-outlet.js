@@ -1,25 +1,38 @@
 import module from './index.js';
+
 export default class RouterOutlet extends HTMLElement {
 
+    constructor() {
+        super();
+        this.animationDuration = 500;
+    }
     static get observedAttributes() {
-        return ['current-url']
+        return ['current-url'];
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
         if (name !== 'current-url' || oldValue === newValue) {
             return;
         }
-        this.changeRoute(newValue)
+        this.changeRoute(newValue);
 
     }
 
     clearChildren() {
-        while (this.childNodes.length) {
-            this.removeChild(this.firstChild)
+
+        if (!this.childNodes.length) {
+            return;
+
         }
+        const child = this.firstChild;
+        child.animate({opacity: [1, 0]}, {duration: this.animationDuration - 500, easing: 'ease'})
+        setTimeout(()=> {
+            this.removeChild(this.firstChild);
+            this.clearChildren();
+        }, this.animationDuration);
+
+
     }
-
-
 
 
     changeRoute(newRoute) {
@@ -32,20 +45,24 @@ export default class RouterOutlet extends HTMLElement {
 
         module.Router.router.currentSnapshot = newRouteData;
 
-       this.clearChildren();
+        this.clearChildren();
 
 
         if (!newRouteData.attributes) {
             newRouteData.attributes = {};
         }
-       const newElement = document.createElement(newRouteData.element, newRouteData.attributes);
-       Object.keys(newRouteData.attributes  || {}).forEach(key => {
-           newElement.setAttribute(key, newRouteData.attributes[key])
-       })
-        setTimeout(() =>
-       this.appendChild(newElement))
+        const newElement = document.createElement(newRouteData.element, newRouteData.attributes);
+        Object.keys(newRouteData.attributes || {}).forEach(key => {
+            newElement.setAttribute(key, newRouteData.attributes[key]);
+        });
+        newElement.style.opacity = 0;
 
-
+        setTimeout(() => {
+            this.appendChild(newElement);
+                newElement.animate({opacity: [0, 1]},  {duration: 2000, easing: 'ease'});
+            newElement.style.opacity = 1;
+            }
+       , this.animationDuration );
 
 
     }
@@ -53,12 +70,10 @@ export default class RouterOutlet extends HTMLElement {
 
     connectedCallback() {
         window.onpopstate = (e) => {
-            this.changeRoute(window.location.pathname)
-        }
-        window.onpushstate =  (e) => {
-            console.log('pop state', e)
-        }
+            this.changeRoute(window.location.pathname);
+        };
 
-        this.changeRoute(window.location.pathname)
+
+        this.changeRoute(window.location.pathname);
     }
 }

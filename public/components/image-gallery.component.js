@@ -1,3 +1,5 @@
+import Router from '../routingModule/router.js'
+
     export default class ImageGallery extends HTMLDivElement {
 
     get displayedImage() {
@@ -80,11 +82,12 @@
     }
 
     reset() {
-        this.galleryContainer.classList.remove('hidden');
-        this.addImageComponent.classList.add('hidden');
-        this.classList.remove('blurry');
-        this.toolbarComponent.setAttribute('add-image-disable', '')
-        this.displayedImage = null;
+        // this.galleryContainer.classList.remove('hidden');
+        // this.addImageComponent.classList.add('hidden');
+        // this.classList.remove('blurry');
+        // this.toolbarComponent.setAttribute('add-image-disable', '')
+        // this.displayedImage = null;
+        Router.router.navigate('/')
     }
 
     get addNewImageElement() {

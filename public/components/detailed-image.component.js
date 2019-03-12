@@ -73,9 +73,6 @@ export default class DetailedImage extends HTMLDivElement {
         return document.querySelector('.image-date');
     }
 
-    get closeElement() {
-        return this.querySelector('.close-button');
-    }
 
     get editTitleElement() {
         return this.querySelector('.edit-title');
@@ -134,7 +131,6 @@ export default class DetailedImage extends HTMLDivElement {
     setEventHandlers() {
 
        // this.imageElement.setAttribute('src', this.getAttribute('image-content'))
-        this.closeElement.onclick = () => this.dispatchEvent(new CustomEvent('close-detailed-image'))
         this.editTitleElement.onclick = () => this.setEditState();
         this.saveTitleButton.onclick = () => {
             this.dispatchEvent(new CustomEvent('update-title', {detail: this.titleTextbox.value}))
@@ -150,12 +146,11 @@ export default class DetailedImage extends HTMLDivElement {
 
     render() {
         const parameters = routingModule.Router.router.currentSnapshot.params;
-        this.innerHTML = `<div>
-<div class="blurry shadow-div"></div>
-<div class="popup-container">
+        this.style.display = 'flex';
+        this.innerHTML = `
         <div class="detailed-image-container">
        
-                <a href="javascript:void(0)" class="close-button"><i class="fas fa-window-close"></i></a>
+                <a href=" /" is="self-routing-anchor" class="close-button"><i class="fas fa-window-close"></i></a>
                  <a href="javascript:void(0)" class="delete-image"><i class="fas fa-trash"></i></a>
               
                  </div>
@@ -188,11 +183,8 @@ export default class DetailedImage extends HTMLDivElement {
          
             <div class="arrows-button">
                  <a href="./${+(parameters.index)+1}" is="self-routing-anchor" functional-id="next-image"><i class="fas fa-chevron-right"></i></a>
-                 </div>
-        </div>
-      
-          
-</div>`
+               </div>
+`
 
         this.imageElement.setAttribute('src', `/images/${parameters.index}`)
         this.setEventHandlers();
