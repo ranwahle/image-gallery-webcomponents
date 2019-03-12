@@ -82,12 +82,7 @@ import Router from '../routingModule/router.js'
     }
 
     reset() {
-        // this.galleryContainer.classList.remove('hidden');
-        // this.addImageComponent.classList.add('hidden');
-        // this.classList.remove('blurry');
-        // this.toolbarComponent.setAttribute('add-image-disable', '')
-        // this.displayedImage = null;
-        Router.router.navigate('/')
+       Router.router.navigate('/')
     }
 
     get addNewImageElement() {
