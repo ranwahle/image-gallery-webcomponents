@@ -1,24 +1,28 @@
 import routingModule from '../routingModule/index.js';
 
+const imageContentAttribute = 'image-content';
+const imageTitleAttribute = 'image-title';
+const imageDescriptionAttribute = 'image-description';
+const imageDateAttribute = 'image-date';
 export default class DetailedImage extends HTMLDivElement {
 
     static get observedAttributes() {
-        return ['image-content', 'image-title', 'image-description', 'image-date', 'next-disabled', 'prev-disabled'];
+        return [imageContentAttribute, imageTitleAttribute, imageDescriptionAttribute, imageDateAttribute, 'next-disabled', 'prev-disabled'];
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
-        if (name === 'image-content') {
+        if (name === imageContentAttribute) {
             this.imageElement.setAttribute('src', newValue);
             this.adjustWidhAndHeight();
 
         }
-        if (name === 'image-title') {
+        if (name === imageTitleAttribute) {
             this.titleElement.textContent = newValue;
         }
-        if (name === 'image-date') {
+        if (name === imageDateAttribute) {
             this.dateElement.textContent = this.getDate(+newValue);
         }
-        if (name === 'image-description') {
+        if (name === imageDescriptionAttribute) {
             this.descriptionElement.textContent = newValue;
         }
         if (name === 'shown') {
@@ -26,18 +30,18 @@ export default class DetailedImage extends HTMLDivElement {
         }
         if (name === 'prev-disabled') {
             if (newValue === 'true') {
-                this.prevImageElement.classList.add('hidden')
+                this.prevImageElement.classList.add('hidden');
             } else {
-                this.prevImageElement.classList.remove('hidden')
+                this.prevImageElement.classList.remove('hidden');
             }
 
 
         }
         if (name === 'next-disabled') {
             if (newValue === 'true') {
-                this.nextImageElement.classList.add('hidden')
+                this.nextImageElement.classList.add('hidden');
             } else {
-                this.nextImageElement.classList.remove('hidden')
+                this.nextImageElement.classList.remove('hidden');
             }
         }
 
@@ -58,7 +62,7 @@ export default class DetailedImage extends HTMLDivElement {
     }
 
     get descriptionElement() {
-        return this.querySelector('.image-description')
+        return this.querySelector('.image-description');
     }
 
     get imageElement() {
@@ -92,18 +96,18 @@ export default class DetailedImage extends HTMLDivElement {
     }
 
     get titleSectionElement() {
-        return this.querySelector('h2')
+        return this.querySelector('h2');
     }
 
     setEditState() {
         this.titleSectionElement.classList.add('hidden');
-        this.editTitleSection.classList.remove('hidden')
-        this.titleTextbox.value = this.getAttribute('image-title')
+        this.editTitleSection.classList.remove('hidden');
+        this.titleTextbox.value = this.imageTitle;
     }
 
     setReadonlyState() {
         this.titleSectionElement.classList.remove('hidden');
-        this.editTitleSection.classList.add('hidden')
+        this.editTitleSection.classList.add('hidden');
     }
 
     get saveTitleButton() {
@@ -119,27 +123,59 @@ export default class DetailedImage extends HTMLDivElement {
     }
 
     get prevImageElement() {
-        return this.querySelector('[functional-id="prev-image"')
+        return this.querySelector('[functional-id="prev-image"');
+    }
+
+    get imageTitle() {
+        return this.getAttribute(imageTitleAttribute);
+    }
+
+    set imageTitle(title) {
+        this.setAttribute(imageTitleAttribute, title);
     }
 
 
     get nextImageElement() {
-        return this.querySelector('[functional-id="next-image"')
+        return this.querySelector('[functional-id="next-image"');
+    }
+
+    get imageContent() {
+        return this.getAttribute(imageContentAttribute);
+    }
+
+    set imageContent(content) {
+        this.setAttribute(imageContentAttribute, content);
+    }
+
+
+    get imageDate() {
+        return this.getAttribute(imageDateAttribute);
+    }
+
+    set imageDate(date) {
+        this.setAttribute(imageDateAttribute, date);
+    }
+    get imageDescription() {
+        return this.getAttribute(imageDescriptionAttribute);
+    }
+
+    set imageDescription(description) {
+        this.setAttribute(imageDescriptionAttribute, description)
     }
 
 
     setEventHandlers() {
 
-       // this.imageElement.setAttribute('src', this.getAttribute('image-content'))
+        // this.imageElement.setAttribute('src', this.getAttribute('image-content'))
         this.editTitleElement.onclick = () => this.setEditState();
         this.saveTitleButton.onclick = () => {
-            this.dispatchEvent(new CustomEvent('update-title', {detail: this.titleTextbox.value}))
+            this.dispatchEvent(new CustomEvent('update-title', {detail: this.titleTextbox.value}));
             this.setReadonlyState();
-        }
+        };
 
         this.deleteImageButton.onclick = () => {
             this.dispatchEvent(new CustomEvent('delete-image'));
-        }
+        };
 
 
     }
@@ -159,7 +195,7 @@ export default class DetailedImage extends HTMLDivElement {
          <div style="display: flex;" >
           <div class="arrows-button">
           
-          <a href="./${parameters.index-1}" is="self-routing-anchor" functional-id="prev-image"><i class="fas fa-chevron-left"></i></a>
+          <a href="./${parameters.index - 1}" is="self-routing-anchor" functional-id="prev-image"><i class="fas fa-chevron-left"></i></a>
           </div>
           <div class="detailed-image-container">
           <div class="image-details" >
@@ -182,12 +218,26 @@ export default class DetailedImage extends HTMLDivElement {
             </div>
          
             <div class="arrows-button">
-                 <a href="./${+(parameters.index)+1}" is="self-routing-anchor" functional-id="next-image"><i class="fas fa-chevron-right"></i></a>
+                 <a href="./${+(parameters.index) + 1}" is="self-routing-anchor" functional-id="next-image"><i class="fas fa-chevron-right"></i></a>
                </div>
-`
+`;
 
-        this.imageElement.setAttribute('src', `/images/${parameters.index}`)
+        // this.imageElement.setAttribute('src', `/images/${parameters.index}`)
+        this.getImage(parameters.index);
         this.setEventHandlers();
+    }
+
+    async getImage(id) {
+        const response = await fetch(`/images/${id}`);
+        try {
+            const imageObject = await response.json();
+            this.imageContent = imageObject.content;
+            this.imageTitle = imageObject.title;
+            this.imageDescription = imageObject.description;
+            this.imageDate = imageObject.lastModified;
+        } catch {
+
+        }
     }
 
 
