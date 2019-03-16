@@ -14,7 +14,7 @@ export default class RouterOutlet extends HTMLElement {
         if (name !== 'current-url' || oldValue === newValue) {
             return;
         }
-        this.changeRoute(newValue);
+        this.changeRoute(newValue, oldValue);
 
     }
 
@@ -34,14 +34,28 @@ export default class RouterOutlet extends HTMLElement {
 
     }
 
+    async canGoOn(routeData, guard) {
 
-    changeRoute(newRoute) {
+        if (guard) {
+            return await guard(routeData)
+        }
+
+        return true;
+    }
+
+   async changeRoute(newRoute, oldRoute) {
 
         const newRouteData = module.Router.router.routingSnapshotTreeBuilder.buildRouteTree(newRoute);
 
         if (!newRouteData) {
             throw Error(`Could not build tree for ${newRoute}`);
         }
+        const canGoOn = await this.canGoOn(newRoute, newRouteData.guard)
+
+       if (!canGoOn) {
+          history.replaceState(null, null, oldRoute)
+           return;
+       }
 
         module.Router.router.currentSnapshot = newRouteData;
 
