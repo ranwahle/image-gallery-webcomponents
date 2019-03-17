@@ -19,15 +19,33 @@ export default class Router {
         return document.querySelector('router-outlet');
     }
 
-    navigate(url) {
+    async canGoOn(routeData, guard) {
+
+        if (guard) {
+            return await guard(routeData)
+        }
+
+        return true;
+    }
+
+    async navigate(url) {
         try {
             url = url === '/' ? url :  new URL(url).pathname;
         } catch (err) {
-            throw Error(`Cannot construct url fro, ${url}`)
+            throw Error(`Cannot construct url from ${url}`)
         }
-        history.pushState(null, null, url);
+
 
         this.currentSnapshot = this.routingSnapshotTreeBuilder.buildRouteTree(url);
+
+        const canGoOn = await this.canGoOn(url, this.currentSnapshot.guard);
+
+        if (!canGoOn) {
+            return;
+        }
+
+        history.pushState(null, null, url);
+
         this.routerOutlet.setAttribute('current-url', url);
     }
 }

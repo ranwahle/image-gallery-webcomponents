@@ -34,14 +34,6 @@ export default class RouterOutlet extends HTMLElement {
 
     }
 
-    async canGoOn(routeData, guard) {
-
-        if (guard) {
-            return await guard(routeData)
-        }
-
-        return true;
-    }
 
    async changeRoute(newRoute, oldRoute) {
 
@@ -50,12 +42,7 @@ export default class RouterOutlet extends HTMLElement {
         if (!newRouteData) {
             throw Error(`Could not build tree for ${newRoute}`);
         }
-        const canGoOn = await this.canGoOn(newRoute, newRouteData.guard)
 
-       if (!canGoOn) {
-          history.replaceState(null, null, oldRoute)
-           return;
-       }
 
         module.Router.router.currentSnapshot = newRouteData;
 
