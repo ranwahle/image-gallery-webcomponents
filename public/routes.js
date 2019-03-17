@@ -12,16 +12,20 @@ const imageExistGuard = async path => {
 
     const response = await fetch(`/images/${imageId}`);
 
+    let result = true;
     if (!response.json) {
-        return false;
+        result = false;
     }
     try {
         const data = await response.json()
-        return !!data.content;
+        result =  !!data.content;
 
     } catch  {
-        return false;
+        result =  false;
     }
+
+
+    return result;
 
 
 };
