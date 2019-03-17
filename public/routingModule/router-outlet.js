@@ -35,7 +35,7 @@ export default class RouterOutlet extends HTMLElement {
     }
 
 
-   async changeRoute(newRoute, oldRoute) {
+   async changeRoute(newRoute) {
 
         const newRouteData = module.Router.router.routingSnapshotTreeBuilder.buildRouteTree(newRoute);
 
