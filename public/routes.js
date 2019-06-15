@@ -1,34 +1,51 @@
+import  {ConfirmModal} from './modals/confirm-moadl.js'
+
+
 const imageExistGuard = async path => {
 
     if (!path) {
-        console.error('no path');
-        return false;
+        console.error('no path')
+        return false
     }
-    const imageId = path.split('/')[2];
+    const imageId = path.split('/')[2]
 
     if (!imageId) {
-        return false;
+        return false
     }
 
-    const response = await fetch(`/images/${imageId}`);
+    const response = await fetch(`/images/${imageId}`)
 
-    let result = true;
+    let result = true
     if (!response.json) {
-        result = false;
+        result = false
     }
     try {
         const data = await response.json()
-        result =  !!data.content;
+        result = !!data.content
 
-    } catch  {
-        result =  false;
+    } catch {
+        result = false
     }
 
+
+    return result
+
+
+}
+
+const confirmExit = async () => {
+    console.log('You will never exit')
+    const confirmModal =  document.createElement('confirm-modal');
+    confirmModal.comfirmQuestion = 'Are you sure?';
+    document.body.appendChild(confirmModal);
+    const result = await confirmModal.getUserResult();
+
+    document.body.removeChild(confirmModal);
 
     return result;
 
 
-};
+}
 
 export default [
     {path: '/', element: 'div', attributes: {is: 'images-container'}}
@@ -36,7 +53,8 @@ export default [
     {
         path: '/addImage',
         element: 'div',
-        attributes: {is: 'add-image'}
+        attributes: {is: 'add-image'},
+        deactivateGuard: confirmExit
     }, {
         path: 'image/:index',
         element: 'div',
@@ -44,5 +62,5 @@ export default [
         guard: imageExistGuard
     }
 
-];
+]
 

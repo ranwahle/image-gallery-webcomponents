@@ -19,16 +19,25 @@ export default class Router {
         return document.querySelector('router-outlet');
     }
 
-    async canGoOn(routeData, guard) {
+    async canGoOn(routeData, guard, oldGuard) {
 
-        if (guard) {
-            return await guard(routeData)
+        let result = true;
+        if (oldGuard) {
+            result = await oldGuard(routeData);
+        }
+        if (guard && result) {
+            result = await guard(routeData)
         }
 
-        return true;
+        return result;
     }
 
     async navigate(url) {
+        // Check if you may exit the current URL
+
+        const oldRouteData =  this.routingSnapshotTreeBuilder.buildRouteTree(window.location.pathname);
+
+
         try {
             url = url === '/' ? url :  new URL(url).pathname;
         } catch (err) {
@@ -36,15 +45,16 @@ export default class Router {
         }
 
 
+
         this.currentSnapshot = this.routingSnapshotTreeBuilder.buildRouteTree(url);
 
-        const canGoOn = await this.canGoOn(url, this.currentSnapshot.guard);
+        const canGoOn = await this.canGoOn(url, this.currentSnapshot.guard, oldRouteData && oldRouteData.deactivateGuard);
 
         if (!canGoOn) {
             return;
         }
 
-        history.pushState(null, null, url);
+        history.pushState({current: url, prev: window.location.pathname}, null, url);
 
         this.routerOutlet.setAttribute('current-url', url);
     }
